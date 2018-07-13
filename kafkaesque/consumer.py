@@ -32,7 +32,6 @@ class Kafkaesque():
     def _run_handlers(self, msg):
         try:
             handlers = self.handlers[msg.topic]
-            handler(msg)
             for handler in handlers:
                 handler(msg)
             self.consumer.commit()
