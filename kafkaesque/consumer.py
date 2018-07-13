@@ -33,6 +33,9 @@ class Kafkaesque():
         try:
             handlers = self.handlers[msg.topic]
             handler(msg)
+            for handler in handlers:
+                handler(msg)
+            self.consumer.commit()
         except Exception as e:
             self.logger.critical(str(e), exc_info=1)
             self.consumer.close()
