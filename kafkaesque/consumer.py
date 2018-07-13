@@ -1,6 +1,5 @@
 from kafka import KafkaConsumer
 import traceback
-import json
 import logging
 import sys
 import signal
@@ -33,10 +32,7 @@ class Kafkaesque():
     def _run_handlers(self, msg):
         try:
             handlers = self.handlers[msg.topic]
-            for handler in handlers:
-                payload = json.loads(msg.value)
-                handler(payload)
-            self.consumer.commit()
+            handler(msg)
         except Exception as e:
             self.logger.critical(str(e), exc_info=1)
             self.consumer.close()
